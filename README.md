@@ -6,7 +6,7 @@ Web app to make you discover your favorite music you haven't heard yed
 * 1.Let the server start listening in localhost port 8888:
   * Run `node server.js` in a console 
 * 2.Access in a browser localhost:8888 
-* 3.Done 😁
+* 3.Done!! 😁
 
 ## Quick structure explanation
 
