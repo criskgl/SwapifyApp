@@ -1,816 +1,177 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
+  <!-- Required meta tags -->
   <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+
   <title>Swapify</title>
-  <link rel="stylesheet" href="main.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Megrim" rel="stylesheet">
-  <link rel="shortcut icon" type="image" href="favicon.ico?"/>
-  <link rel="stylesheet" href="img/font-awesome-4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/brands.css" integrity="sha384-IiIL1/ODJBRTrDTFk/pW8j0DUI5/z9m1KYsTm/RjZTNV8RHLGZXkUDwgRRbbQ+Jh" crossorigin="anonymous">
-  <link href="macOSNotif.min.css" rel="stylesheet"/>
-
-    <style type="text/css">
-      #login, #loggedin {
-        display: none;
-      }
-      .text-overflow {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 500px;
-      }
-      .playlist-title {
-        position: absolute;
-        top: 50%;
-        left: 0px;
-        width: 100%;
-        z-index: 3;
-        line-height: 1.2rem;
-        opacity: 0.8;
-        color: #000;
-        background-color: #fff;
-      }
-      .playlist-image {
-        position: relative;
-        top: 0px;
-        left: 0px;
-        z-index: 1; 
-      }
-     
-     /*TRICK HEXAGON*/
-  .hexagon {
-  position: relative;
-  width: 300px; 
-  height: 173.21px;
-  margin: 86.60px 0;
-  background-size: auto 346.4102px;
-  background-position: center;
-  box-shadow: 0 0 30px rgba(26,203,0,0.85);
-    transition: all .2s linear;
-   -o-transition: all .2s linear;
-   -moz-transition: all .2s linear;
-   -webkit-transition: all .2s linear;
-   transform: translateX(50px) scale(1.1) rotate(90deg);
-}
-
-.hexagon:hover{
-  transform-origin: 50% 50%;
-  transform: scale(1.1);
-  transition: 0s;
-}
-
-.hexTop,
-.hexBottom {
-  position: absolute;
-  z-index: 1;
-  width: 212.13px;
-  height: 212.13px;
-  overflow: hidden;
-  -webkit-transform: scaleY(0.5774) rotate(-45deg);
-  -ms-transform: scaleY(0.5774) rotate(-45deg);
-  transform: scaleY(0.5774) rotate(-45deg);
-  background: inherit;
-  box-shadow: 0 0 30px rgba(26,203,0,0.85);
-  left: 43.93px;
-}
-
-/*counter transform the bg image on the caps*/
-.hexTop:after,
-.hexBottom:after {
-  content: "";
-  position: absolute;
-  width: 300.0000px;
-  height: 173.20508075688775px;
-  -webkit-transform:  rotate(45deg) scaleY(1.7321) translateY(-200.6025px);
-  -ms-transform:      rotate(45deg) scaleY(1.7321) translateY(-86.6025px);
-  transform:          rotate(45deg) scaleY(1.7321) translateY(-86.6025px);
-  -webkit-transform-origin: 0 0;
-  -ms-transform-origin: 0 0;
-  transform-origin: 0 0;
-  background: inherit;
-}
-
-.hexTop {
-  top: -106.0660px;
-}
-
-.hexTop:after {
-  background-position: center top;
-}
-
-.hexBottom {
-  bottom: -106.0660px;
-}
-
-.hexBottom:after {
-  background-position: center bottom;
-}
-
-.hexagon:after {
-  content: "";
-  position: absolute;
-  top: 0.0000px;
-  left: 0px;
-  width: 300.0000px;
-  height: 173.2051px;
-  z-index: 2;
-  background: inherit;
-}
-/*END TRICK HEXAGON*/
-
-/*CHEVRON TO INDICATE SCROLL DOWN*/
-.container-chevron {
-  position: relative;
-  width: 10px;
-  height: 10px;
-}
-.chevron {
-  position: absolute;
-  width: 28px;
-  height: 8px;
-  opacity: 0;
-  transform: scale3d(0.5, 0.5, 0.5);
-  animation: move 3s ease-out infinite;
-}
-
-.chevron:first-child {
-  animation: move 3s ease-out 1s infinite;
-}
-
-.chevron:nth-child(2) {
-  animation: move 3s ease-out 2s infinite;
-}
-
-.chevron:before,
-.chevron:after {
-  content: ' ';
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 51%;
-  background: #000;
-}
-
-.chevron:before {
-  left: 0;
-  transform: skew(0deg, 30deg);
-}
-
-.chevron:after {
-  right: 0;
-  width: 50%;
-  transform: skew(0deg, -30deg);
-}
-
-@keyframes move {
-  25% {
-    opacity: 1;
-
-  }
-  33% {
-    opacity: 1;
-    transform: translateY(30px);
-  }
-  67% {
-    opacity: 1;
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(55px) scale3d(0.5, 0.5, 0.5);
-  }
-}
-
-.text-chevron {
-  display: block;
-  margin-top: 75px;
-  margin-left: -30px;
-  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-size: 12px;
-  color: #000;
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: .25;
-  animation: pulse 2s linear alternate infinite;
-}
-
-@keyframes pulse {
-  to {
-    opacity: 1;
-  }
-  /*END CHEVRON TO INDICATE SCROLL DOWN*/
-  /* Add an orange color to all icons and set the font-size */
-.logo-small {
-  color: #f4511e;
-  font-size: 50px;
-}
-
-.logo {
-  color: #f4511e;
-  font-size: 200px;
-
-    </style>
-
-
 </head>
-<body id="myPage">
+
+<body style="font-family: 'Roboto', sans-serif;">
   <div id="navbar-placeholder"></div>
-  <!--End of navigation-->
-
-    <div id="particles-js">
-      <div class="container-fluid">
-        <div class="text">
-          <center><h1>Start swapping</h1></center>
-          <center>
-            <div class="container-chevron">
-              <div class="chevron"></div>
-              <div class="chevron"></div>
-              <div class="chevron"></div>
-              <span class="text-chevron">Scroll Down</span>
-            </div>
-          </center>
-        </div>
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-12">
+        <h4 class="songitem">My Playlists</h4>
       </div>
     </div>
-    <script src="toast.js"></script>
-    <script type="text/javascript" src="particles.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+  </div>
+  <div id="user-playlists"></div>
+
+
+
+  <!-- Handlebars Templates -->
+  <!-- NAVBAR Template -->
+  <script id="navbar-template" type="text/x-handlebars-template">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#" style="font-family: Megrim;">
+        <img src="img/logoSmall.png" width="30" height="30" class="d-inline-block align-top" alt=""> Swapify
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">How it works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Log out ({{display_name}})</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </script>
+  <!-- TITLE BAR (WITH BACK BUTTON) Template -->
+  <script id="navbar-template" type="text/x-handlebars-template">
+
+  </script>
+
+  <!-- PLAYLISTS Template -->
+  <script id="playlist-template" type="text/x-handlebars-template">
     <div class="container">
-        <div id="user-profile">
-        </div>
-    </div>
-
-
-
-   <!--Why Swapping-->
-  <div class="container-fluid">
-    <div class="row section" id="about-section">
-      <div class="heading-title text-center">
-        <h3 class="text-uppercase">About</h3>
-        <hr class="title-divider">
-        <div class="col-md-12 col-sm-12 maily">
-        <div class="contact-mail-box text-center">
-          <span class="button dimond">Swapify will freshen your old playlists and eliminate that feeling of dullness from those you consistently love listening to!</span>
-          <span class="button dimond">So, how do we do it?<br><br><span class="glyphicon glyphicon-chevron-down"></span></span>
-          
-        </div>
-        </div>
-        <!--Uncomment this to load<div id="history-chart"></div>-->
-        
-        <img style="width: 80%; margin-top: 30px;" src="img/demo2.png">
-      </div>
-    </div>
-  </div>
-
-
-    <!--Swap-->
-  <div class="container-fluid">
-    <div class="row section" id="swap-section">
-
-      <div class="heading-title text-center">
-        <h3 class="text-uppercase">Swap</h3>
-        <hr class="title-divider">
-        <div id="user-playlists">
-        </div>
-      </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!--Donations-->
-  <div class="container-fluid">
-    <div class="row section" id="donation-section">
-
-      <div class="heading-title text-center">
-        <h3 class="text-uppercase"><i class="fab fa-bitcoin"></i> Donations</h3>
-        <hr class="title-divider">
-      </div>
-      <div class="col-md-12 col-sm-12 maily">
-        <div class="contact-mail-box text-center">
-          <span class="button dimond">3J5oLbiFNFEst9wjRdEW3BrCqtpS3aHatN</span>
-          <img src="img/address-btc.png" style="width: 30%; margin-bottom: 100px;">
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!--Donations-->
-  <div class="container-fluid">
-    <div class="row section" id="ar-section">
-
-      <div class="heading-title text-center">
-        <h3 class="text-uppercase"></i>AR</h3>
-        <hr class="title-divider">
-      </div>
-      <div class="col-md-12 col-sm-12 maily">
-        <div class="contact-mail-box text-center">
-          <span class="button dimond">We though having our logo in AR was cool, so we did it</span>
-          <span class="button dimond">Available for iOS only</span>
-          <a rel="ar" href="img/logoswapify.usdz"><img  src="img/ar-logo.png" style="width: 20%; margin-bottom: 100px;"></a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<!-- fd 
-    <div class="container">
-      <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-      </div>
-     
-        
-        <div id="oauth">
-        </div>
-        <div class="row text-center">
-          <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-        </div>
-  </div>
--->
-
-
-  <footer class="container-fluid text-center">
-    <a href="#myPage" title="To Top">
-      <span class="glyphicon glyphicon-chevron-up"></span>
-    </a>
-    <p id="footer-text">Made with <span class="fa fa-heart" id="heart-footer"></span> by a group of UI lovers</p>
-  </footer>
-
-
-    <script id="user-profile-template" type="text/x-handlebars-template">
-      <div class="row text-center">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <h1>Welcome {{display_name}} !</h1>
-        </div>
-      </div>
-
-    </script>
-
-    <script id="oauth-template" type="text/x-handlebars-template">
-      <div class="row text-center">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-          <dl class="dl-horizontal">
-            <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
-            <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
-          </dl>
-        </div>
-      </div> 
-    </script>
-
-    <script id="playlist-template" type="text/x-handlebars-template">
-        <div class="container-fluid">
-          <div class="row text-center">
-            {{#each items}}
-            <div style="margin: 0px">
-              <div class="col-xs-6 col-md-4 col-lg-4">
-                <div class="playlist-title text-center">
-                  <h4 class="media-heading person-name ">{{this.name}}</h4>
-                </div>
-                <div class="hexagon" style="background-image: url({{this.images.0.url}});">
-                      <div class="hexTop"></div>
-                      <div class="hexBottom"></div>
-                    </div>
-                <button class=" btn btn-success btn-block btn-lg " id="btn-swapper{{@index}}" onclick="swapIt({{@index}})" style="border-radius: 0px; color: black; letter-spacing: 3px;">SWAP</button>
-                <button class=" btn btn-danger btn-block btn-lg " id="btn-swapper{{@index}}" onclick="removeIt({{@index}})" style="border-radius: 0px; color: black; letter-spacing: 3px;">REMOVE</button>
-                 <iframe class="playlist-preview" src="https://open.spotify.com/embed/playlist/{{this.id}}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-              </div>
+      {{#each items}}
+      <div class="row songitem" style="padding-bottom:8px; margin-bottom: 8px; border-bottom: 1px solid #ddd;" onclick="getdetails('{{this.id}}')">
+            <div class="col-4">
+                <img class="rounded" style="width: 100%;"src={{this.images.0.url}}>
             </div>
-            {{/each}}
-          </div>
-        </div>
-    </script>
+            <div class="col-8">
+              <h6>{{this.name}}</h6>
+              <p class="text-small" style="color: #bbb">{{this.tracks.total}} songs</p>
+            </div>
+      </div>
+      {{/each}}
+    </div>
+  </script>
+  <!-- Optional JavaScript -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <!-- Handlebars Compilations -->
+  <script>
+    var token;
+    function buildPage() {
 
-    <script id="history-chart-template" type="text/x-handlebars-template">
-        <div class="container-fluid">
-          <div class="row">
-           <div class="col-md-5 col-md-offset-2">
-
-           </div>
-          </div>
-        </div>
-    </script>
-
-    <script id="navbar-template" type="text/x-handlebars-template">
-      <nav class="navbar navbar-inverse navbar-fixed-top navbar-custom" id="myNavbar">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><img src="img/logoSwapify.png" alt="Swapify"></a>
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#about-section">About</a></li>
-              <li><a href="#swap-section">Swap</a></li>
-              <li><a href="#donation-section">Donations</a></li>
-              <li><a href="#ar-section">AR</a></li>
-               <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{display_name}}</a>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </script>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-    <script src="jquery-1.10.1.min.js"></script>
-    <script>
-      (function() {
-
-        /**
-         * Obtains parameters from the hash of the URL
-         * @return Object
-         */
-         function getHashParams() {
-          var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.href.substring(42);
-          while ( e = r.exec(q)) {
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-          return hashParams;
-        }
-
-        /*Compiling handlebars and associating them with divs*/
-        var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-            userProfileTemplate = Handlebars.compile(userProfileSource),
-            userProfilePlaceholder = document.getElementById('user-profile');
-
-        var oauthSource = document.getElementById('oauth-template').innerHTML,
-            oauthTemplate = Handlebars.compile(oauthSource),
-            oauthPlaceholder = document.getElementById('oauth');
-
-        var playlistSource = document.getElementById('playlist-template').innerHTML,
-            playlistTemplate = Handlebars.compile(playlistSource),
-            playlistsPlaceholder = document.getElementById('user-playlists');
-
-        var historyChartSource = document.getElementById('history-chart-template').innerHTML,
-            historyChartTemplate = Handlebars.compile(historyChartSource),
-            historyChartPlaceholder = document.getElementById('history-chart');
-
-        var navbarSource = document.getElementById('navbar-template').innerHTML,
-            navbarTemplate = Handlebars.compile(navbarSource),
-            navbarPlaceholder = document.getElementById('navbar-placeholder');
-
-
-        var params = getHashParams();
-        console.log(params);
-
-        var access_token = params.access_token,
-            refresh_token = params.refresh_token,
-            error = params.error;
-
-        if (error) {
-          alert('There was an error during the authentication');
-        } else {
-          if (access_token) {
-            // render oauth info
-            /*
-            oauthPlaceholder.innerHTML = oauthTemplate({
-              access_token: access_token,
-              refresh_token: refresh_token
-            });*/
-
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me',
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                  console.log("HERE START 2");
-                  console.log(response);
-                  navbarPlaceholder.innerHTML = navbarTemplate(response);
-                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-                  $('#login').hide();
-                  $('#loggedin').show();
-                }
-            });
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me/playlists',
-                data: {
-                  "limit": 50,
-                  "offset": 0
-                },
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                playlistsPlaceholder.innerHTML = playlistTemplate(response);
-                console.log(response);
-                }
-            });
-            
-            /*
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me/playlists',
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                historyChartPlaceholder.innerHTML = historyChartTemplate(response);
-                console.log(response);
-                }
-            });*/
-
-          } else {
-              // render initial screen
-              $('#login').show();
-              $('#loggedin').hide();
-          }
-
-          /*document.getElementById('obtain-new-token').addEventListener('click', function() {
-            
-            $.ajax({
-              url: '/refresh_token',
-              data: {
-                'refresh_token': refresh_token
-              }
-            }).done(function(data) {
-              access_token = data.access_token;
-              oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-              });
-            });
-          }, false);*/
-        }
-      })();
-    </script>
-    <script type="text/javascript">
-      function swapIt(index){
+      /**
+        * Obtains parameters from the hash of the URL
+        * @return Object
+        */
+      console.log("HI");
+      function getHashParams() {
         var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.href.substring(42);
-          while ( e = r.exec(q)) {r
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-        console.log("Swapping song number"+index);
-        var access_token = hashParams.access_token;
-        var playlistList;
-        var playlist;
-        var playlistIndex = index;
-        $.ajax({
-          /*Pass playlist id using @index in handlebar template*/
-                url: 'https://api.spotify.com/v1/me/playlists',
-                data: {
-                  "limit": 50,
-                  "offset": 0
-                },
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                console.log(response);
-                  playlistList = response.items;
-                  console.log(playlistList);
-                  playlist = playlistList[playlistIndex];
-                  var playListTracksUrl = playlist.tracks.href;
-                  var playListId = playlist.id;
-                  var playListName = playlist.name;
-                  $.ajax({
-                      url: playListTracksUrl,
-                      headers: {
-                        'Authorization': 'Bearer ' + access_token
-                      },
-                      success: function(response) {
-                        console.log("This are the playlist songs")
-                        var songs = response.items;
-                        console.log(songs);
-                        /*Now that we have all the songs. Save song artists*/
-                        var artistsIdList = new Array(songs.length);
-                        for (var i=0, item; item = songs[i]; i++) {
-                          //console.log("Looping: index ", i, "artistName" + item.track.artists[0].name);
-                          var nArtistsPerSong = item.track.artists.length;
-                          console.log("nArtistsPerSong: ");
-                          
-                          console.log(nArtistsPerSong);
-                          if(nArtistsPerSong > 1){
-                            console.log("randomArtistIndex: ");
-                            var randomArtistIndex = Math.floor(Math.random() * Math.floor(nArtistsPerSong));
-                            console.log(randomArtistIndex);
-                            artistsIdList[i] = item.track.artists[randomArtistIndex].id;
-                          }else{
-                            artistsIdList[i] = item.track.artists[0].id;
-                          }
-                        }
-                        newSongs = {
-                          playlistId: playListId,
-                          playlistName: playListName,
-                          songs: []
-                        };
-                        for (var i=0, item; item = artistsIdList[i]; i++) {
-                          var topSongsForArtistUrl = 'https://api.spotify.com/v1/artists/'+item+'/top-tracks'
-                          $.ajax({
-                            data: { 
-                              country: 'US'
-                            },
-                            url: topSongsForArtistUrl,
-                            headers: {
-                              'Authorization': 'Bearer ' + access_token
-                            },
-                            success: function(response) 
-                            { 
-
-                              var candidateSongs = response;
-                              //console.log(candidateSongs);
-                              var nCandidateSongs = Object.keys(candidateSongs.tracks).length;
-
-                              if(Object.keys(candidateSongs.tracks).length > 1){
-                                var randomCandidateIndex = Math.floor(Math.random() * Math.floor(nCandidateSongs));
-                                newSongs.songs.push(candidateSongs.tracks[randomCandidateIndex]);
-                              }else{
-                                newSongs.songs.push(candidateSongs.tracks[0]);
-                              }
-                            }
-                          });
-                        }
-                        console.log("THIS ARE THE NEW SONGS: ");
-                        console.log(newSongs);
-                        /*At this point we have the playlist id, name, and cadidate newSongs to put in the playlist*/
-                        $.ajax({
-                            url: 'https://api.spotify.com/v1/me',
-                            headers: {
-                              'Authorization': 'Bearer ' + access_token
-                            },
-                            success: function(response) {
-                              var newListName = "🔥"+newSongs.playlistName+"🔥"
-                              var userId = response.id;
-                              urlToCreatePlaylist = 'https://api.spotify.com/v1/users/'+userId+'/playlists'
-                              var settings = {
-                                "async": true,
-                                "crossDomain": true,
-                                "url": urlToCreatePlaylist,
-                                "method": "POST",
-                                "headers": {
-                                  "Content-Type": "application/javascript",
-                                  "Authorization": 'Bearer ' + access_token,
-                                  "Accept": "*/*",
-                                },
-                                "data": "{\n\"name\": \""+newListName+"\"\n}"
-                              }
-
-                            $.ajax(settings).done(function (response) {
-                              newPlayListData = response;
-                              urlToFillPlayList = "https://api.spotify.com/v1/playlists/"+newPlayListData.id+"/tracks"
-                              console.log(newPlayListData);
-
-
-
-                              listOfNewSongs = {
-                                uris: []
-                              }
-                              console.log(newSongs.songs);
-                              for (var i=0, item; item = newSongs.songs[i]; i++) {
-                                listOfNewSongs.uris.push(item.uri);
-                              }
-                              console.log("HERE");
-                              console.log(listOfNewSongs);
-                              
-                              var settings = {
-                                "async": true,
-                                "crossDomain": true,
-                                "url": urlToFillPlayList,
-                                "method": "PUT",
-                                "headers": {
-                                  "Content-Type": "application/json",
-                                  "Authorization": 'Bearer ' + access_token,
-                                  "Accept": "*/*"
-                                },
-                                "processData": false,
-                                "data": JSON.stringify(listOfNewSongs)
-                              }
-
-                              $.ajax(settings).done(function (response) {
-                                    toastSuccessPlaylistCreated(newListName); 
-                                    setTimeout(function() {
-                                      window.location.hash = '#swap-section';
-                                    window.location.reload(true);
-                                    }, 2500);                                 
-                              });
-                            });
-                              
-                            }
-                        });
-                      }
-                  });
-                }
-            });
-
+        var e, r = /([^&;=]+)=?([^&;]*)/g,
+          q = window.location.href.substring(42);
+        while (e = r.exec(q)) {
+          hashParams[e[1]] = decodeURIComponent(e[2]);
+        }
+        return hashParams;
       }
 
-      function removeIt(index){
-        var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.href.substring(42);
-          while ( e = r.exec(q)) {r
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-        console.log("Deleting song number"+index);
-        var access_token = hashParams.access_token;
-        var playlistList;
-        var playlist;
-        var playlistIndex = index;
-        var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.href.substring(42);
-          while ( e = r.exec(q)) {r
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-        console.log("Swapping song number"+index);
-        var access_token = hashParams.access_token;
-        var playlistList;
-        var playlist;
-        var playlistIndex = index;
-        $.ajax({
-          /*Pass playlist id using @index in handlebar template*/
-                url: 'https://api.spotify.com/v1/me/playlists',
-                data: {
-                  "limit": 50,
-                  "offset": 0
-                },
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                  console.log(response);
-                  playlistList = response.items;
-                  console.log(playlistList);
-                  playlist = playlistList[playlistIndex];
-                  var playListTracksUrl = playlist.tracks.href;
-                  var playListId = playlist.id;
-                  var playlistName = playlist.name;
-                  var settings = {
-                    "async": true,
-                    "crossDomain": true,
-                    "url": "https://api.spotify.com/v1/playlists/"+playListId+"/followers",
-                    "method": "DELETE",
-                    "headers": {
-                      "Authorization": "Bearer " + access_token,
-                      "Accept": "*/*"
-                    }
-                  }
+      /*Compiling handlebars and associating them with divs*/
 
-                  $.ajax(settings).done(function (response) {
-                    toastSuccessPlaylistDeleted(playlistName)
-                    setTimeout(function() {
-                                      window.location.hash = '#swap-section';
-                                    window.location.reload(true);
-                                    }, 2500);
-                  });
-                }
-            });
-    }
-    </script>
+      var navbarSource = document.getElementById('navbar-template').innerHTML,
+        navbarTemplate = Handlebars.compile(navbarSource),
+        navbarPlaceholder = document.getElementById('navbar-placeholder');
 
-    <script>
-      /*Helper to display a row every 3 items*/
-      Handlebars.registerHelper('ifThird', function (index, options) {
-       if((index)%3 == 0){
-          return options.fn(this);
-       } else {
-          return options.inverse(this);
-       }
-      });
-    </script>
-    <script>
-      /*Helper to display a row every 3 items*/
-      Handlebars.registerHelper('ifThird2', function (index, options) {          
-       if((index-3) % 3 == 0){
-          return options.fn(this);
-       } 
-       else {
-          return options.inverse(this);
-       }
-      });
-    </script>
-    <script src="macOSNotif.min.js"></script>
-      <script type="text/javascript">
-    function toastSuccessPlaylistCreated(newPlaylistTitle){
-    macOSNotif({
-    title:'Success',
-    subtitle:'New Playlist'+newPlaylistTitle+'has been created',
-    theme:macOSNotifThemes.Success,
-    mainLink:'#',
-    btn1Text:null,
-    sounds: true
-})
-    }
+      var playlistSource = document.getElementById('playlist-template').innerHTML,
+        playlistTemplate = Handlebars.compile(playlistSource),
+        playlistsPlaceholder = document.getElementById('user-playlists');
 
-        function toastSuccessPlaylistDeleted(newPlaylistTitle){
-    macOSNotif({
-    title:'Removed ❌',
-    subtitle:'Playlist '+newPlaylistTitle+'has been removed successfully',
-    theme:macOSNotifThemes.Success,
-    mainLink:'#',
-    btn1Text:null,
-    sounds: true
-})
+      var params = getHashParams();
+      console.log(params);
+      token = params.access_token;
+
+      var access_token = params.access_token,
+        refresh_token = params.refresh_token,
+        error = params.error;
+
+      if (error) {
+        alert('There was an error during the authentication');
+      } else {
+        if (access_token) {
+          // render oauth info
+          /*
+          oauthPlaceholder.innerHTML = oauthTemplate({
+            access_token: access_token,
+            refresh_token: refresh_token
+          });*/
+
+          $.ajax({
+            url: 'https://api.spotify.com/v1/me',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            success: function (response) {
+              console.access_token
+              console.log(response);
+              navbarPlaceholder.innerHTML = navbarTemplate(response);
+              $('#login').hide();
+              $('#loggedin').show();
+            }
+          });
+          $.ajax({
+            url: 'https://api.spotify.com/v1/me/playlists',
+            data: {
+              "limit": 50,
+              "offset": 0
+            },
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            success: function (response) {
+              playlistsPlaceholder.innerHTML = playlistTemplate(response);
+              console.log(response);
+            }
+          });
+        } else {
+          // render initial screen
+          $('#login').show();
+          $('#loggedin').hide();
+        }
+      }
+    };
+    $(document).ready(function () {
+      buildPage();
+
+    });
+    function getdetails(playlist_id) {
+      console.log("hey");
+
+      window.open('playListDetails.html?access_token=' + token + "&playlist_id=" + playlist_id, '_self');
     }
   </script>
 </body>
+
 </html>
