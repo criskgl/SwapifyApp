@@ -20,7 +20,7 @@ var client_secret = "32ab56c55e5640b0b3a4855a0959f251"; // Your secret
 var herokuDeploy = true;
 var redirect_uri;
 if (herokuDeploy) {
-  redirect_uri = 'https://swapify123.herokuapp.com/home';
+  redirect_uri = 'https://swapify321.herokuapp.com/home';
 } else {
   redirect_uri = "http://localhost:8888/home";
 }
