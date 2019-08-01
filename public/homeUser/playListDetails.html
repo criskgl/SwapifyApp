@@ -36,7 +36,8 @@
 
         #swap-button a p {
             letter-spacing: 1px;
-            font-size: 7px;
+            font-size: 8px;
+            margin: 0px;
         }
 
         #remove-button {
@@ -68,7 +69,15 @@
     <div id="navbar-placeholder"></div>
     <div id="title-back-placeholder"></div>
     <div id="playlist-placeholder"></div>
-
+    <footer class="container-fluid text-center">
+        <a href="#myPage" title="To Top">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </a>
+        <p id="footer-text" style="font-family: Megrim; letter-spacing: 2px; font-size: 11px;">Made with
+            <i class="fas fa-heart" style="color: red; font-size: 15px"></i> by
+            <a href="www.linkedin.com/in/cristian-kublai-gomez" target="blank">Cristian K. Gómez</a>
+        </p>
+    </footer>
 
 
     <!-- Optional JavaScript -->
@@ -147,11 +156,25 @@
             </div>
 
             {{#each tracks.items}}
+            <!--AUDIO PLAYER
             <div class="row">
                 <div class="col-12">
                     <audio controls style="width: 100%">
                         <source src="{{this.track.preview_url}}" type="audio/mp3">
                     </audio>
+                </div>
+            </div>
+            -->
+            
+            <div class="row" style="padding-bottom:8px; margin-bottom: 8px; border-bottom: 1px solid #ddd;" onclick="">
+                <div class="col-4">
+                    <img class="rounded" style="width: 80%;"src="{{this.track.album.images.2.url}}">
+                </div>
+                <div class="col-8">
+                        <h6 style="font-size: 15px; overflow: hidden;
+                        white-space: nowrap; /* Don't forget this one */
+                        text-overflow: ellipsis;">{{this.track.name}}</h6>
+                        <p  style="color: rgb(92, 92, 92); font-size: 10px;">{{this.track.artists.0.name}}</p>
                 </div>
             </div>
             {{/each}}
