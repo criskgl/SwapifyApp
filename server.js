@@ -13,13 +13,19 @@ var client_id = "ce5338b55dae47da81b2176a375b176f"; // Your client id
 var client_secret = "32ab56c55e5640b0b3a4855a0959f251"; // Your secret
 
 /*IMPORTANT
- * To deploy in heroku uncomment the second declaration of redirect_uri
- * for deploying localy in localhost:8888 just comment the seond
+ * To deploy in heroku set kerokuDeploy to true
+ * for deploying localy set herokuDeploy to false
  * delaration of redirect uri
  */
-var origin = location.origin;
-var redirect_uri = origin + "/home"; // Your redirect uri
-//var redirect_uri =  'https://swapify123.herokuapp.com/home';
+var herokuDeploy = true;
+var redirect_uri;
+if (herokuDeploy) {
+  redirect_uri = 'https://swapify123.herokuapp.com/home';
+} else {
+  redirect_uri = "http://localhost:8888/home";
+}
+
+
 
 console.log(redirect_uri);
 /**
