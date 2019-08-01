@@ -26,10 +26,10 @@
             font-size: 20px;
             color: #FFFFFF;
             font-family: 'Helvetica';
-            letter-spacing: 7px;
+            letter-spacing: 1px;
             text-decoration: none;
             text-transform: uppercase;
-            padding: 20px 25px;
+            padding: 10px 25px;
             display: inline-block;
             margin-right: 15px;
             cursor: pointer;
@@ -62,6 +62,12 @@
             display: inline-block;
             margin-right: 15px;
             cursor: pointer;
+        }
+
+        .track-air-container {
+            padding: 4px;
+            margin: 4px;
+            border-bottom: 1px solid #ddd;
         }
     </style>
 </head>
@@ -144,40 +150,32 @@
             <div class="row">
                 <div class="col-12">
                     <div id="swap-button">
-                        <a onclick="">Swapify<p>Create new playlist based on this one</p></a>
+                        <a onclick="">Swapify</a>
                     </div>
-                </div>
-            </div>
-            <div class="row mb-2">    
-                <div class="col-12">
-                    <div id="remove-button">
-                        <a onclick="">Delete <i class="fab fa-spotify" style="color:#84bd00"></i> playlist</a>
+                    <div style="color:#666; text-align: center; font-family: Roboto, sans-serif;">
+                        <p>Create a new playlist based on this one</p>
                     </div>
                 </div>
             </div>
 
+
             {{#each tracks.items}}
-            <!--AUDIO PLAYER
-            <div class="row">
-                <div class="col-12">
-                    <audio controls style="width: 100%">
-                        <source src="{{this.track.preview_url}}" type="audio/mp3">
-                    </audio>
+            <div class="row track-air-container" id="track-{{this.track.id}}"  onclick="playSound('{{this.track.preview_url}}', '{{this.track.id}}');">
+                <div class="col-3 col-md-2">
+                    <img  class="img-responsive rounded" src="{{this.track.album.images.2.url}}">
                 </div>
-            </div>
-            -->
-            
-            <div class="row" style="padding-bottom:8px; margin-bottom: 8px; border-bottom: 1px solid #ddd;" onclick="">
-                <div class="col-4">
-                    <img class="rounded" style="width: 80%;"src="{{this.track.album.images.2.url}}">
-                </div>
-                <div class="col-8">
+                <div class="col-9 col-md-10">
                         <h6 style="font-size: 15px; overflow: hidden;
                         white-space: nowrap; /* Don't forget this one */
                         text-overflow: ellipsis;">{{this.track.name}}</h6>
                         <p  style="color: rgb(92, 92, 92); font-size: 10px;">{{this.track.artists.0.name}}</p>
+                        <img id="equalizer-img-{{this.track.id}}"src="img/equalizer.gif" style="position: absolute;right: 0px;bottom: 0px;width: 20%;visibility: hidden;;">
                 </div>
             </div>
+                        <audio id="song-audio-{{this.track.id}}" style="width: 100%">
+                            <source src="{{this.track.preview_url}}" type="audio/mp3">
+                        </audio>
+
             {{/each}}
         </div>
     </script>
@@ -195,7 +193,7 @@
             function getHashParams() {
                 var hashParams = {};
                 var e, r = /([^&;=]+)=?([^&;]*)/g,
-                    q = window.location.href.substring(63);
+                    q = window.location.href.substring(52);
                 while (e = r.exec(q)) {
                     hashParams[e[1]] = decodeURIComponent(e[2]);
                 }
@@ -273,6 +271,31 @@
             }
         };
         $(document).ready(buildPage());
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        var songPlayingId = null;
+
+        function playSound(soundfile, songId) {
+            if (songPlayingId) {//song playing?
+                if (songPlayingId == songId) {//song touched same as played?
+                    document.getElementById('song-audio-' + songId).pause();
+                    document.getElementById('equalizer-img-' + songPlayingId).style.visibility = 'hidden';
+                    songPlayingId = null;
+                } else {
+                    document.getElementById('song-audio-' + songPlayingId).pause();
+                    document.getElementById('equalizer-img-' + songPlayingId).style.visibility = 'hidden';
+                    songPlayingId = songId;
+
+                    document.getElementById('song-audio-' + songId).play();
+                    document.getElementById('equalizer-img-' + songPlayingId).style.visibility = 'visible';
+                }
+            } else {
+                songPlayingId = songId;
+                document.getElementById('song-audio-' + songId).play();
+                document.getElementById('equalizer-img-' + songPlayingId).style.visibility = 'visible';
+            }
+        }
     </script>
 </body>
 
