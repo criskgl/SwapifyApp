@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Swapify</title>
+</head>
+
+<body style="font-family: 'Roboto', sans-serif;">
+    <div id="navbar-placeholder"></div>
+    <div id="title-back-placeholder"></div>
+    <div id="playlist-placeholder"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <script src="https://kit.fontawesome.com/fc10dec7d5.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- Handlebars Templates -->
+    <!-- NAVBAR Template -->
+    <script id="navbar-template" type="text/x-handlebars-template">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="font-family: Megrim;">
+            <img src="img/logoSmall.png" width="30" height="30" class="d-inline-block align-top" alt=""> Swapify
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">How it works</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Log out ({{display_name}})</a>
+            </li>
+            </ul>
+        </div>
+        </nav>
+    </script>
+    <!-- TITLE BAR (WITH BACK BUTTON) Template -->
+    <script id="title-back-template" type="text/x-handlebars-template">
+        <div class="container">
+            <div class="row mt-3">
+                <div class=col-2>
+                    <a href="{{origin}}/homeUser/index.html?access_token={{access_token}}">
+                        <span class="fas fa-chevron-left" style="font-size: 30px; color: #84bd00; "></span>
+                    </a>
+                </div>
+                <div class="col-10" style="text-overflow: ellipsis;
+                overflow: hidden; 
+                width: 300px; 
+                height: 1.2em; 
+                white-space: nowrap;">
+                        {{playlist.name}}                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- PLAYLIST INFORMATION Template -->
+    <script id="playlist-template" type="text/x-handlebars-template">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <img src="{{playlist.images.0.url}}" class="rounded mx-auto d-block img-fluid" alt="Image of playlist {{playlist.name}}">
+                </div>
+            </div>
+            {{#each tracks.items}}
+            <div class="row">
+                <div class="col-12">
+                    <audio controls style="width: 100%">
+                        <source src="{{this.track.preview_url}}" type="audio/mp3">
+                    </audio>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </script>
+
+    <!-- Handlebars Compilations -->
+    <script>
+        /* 1.Obtains parameters from url*/
+        /* 2.Feeds Handlebars with info from ajax calls*/
+        function buildPage() {
+            var origin = window.location.origin;
+            /**
+              * Obtains parameters from the hash of the URL
+              * @return Object
+              */
+            function getHashParams() {
+                var hashParams = {};
+                var e, r = /([^&;=]+)=?([^&;]*)/g,
+                    q = window.location.href.substring(52);
+                while (e = r.exec(q)) {
+                    hashParams[e[1]] = decodeURIComponent(e[2]);
+                }
+                return hashParams;
+            }
+
+            /*Compiling handlebars and associating them with divs*/
+
+            var navbarSource = document.getElementById('navbar-template').innerHTML,
+                navbarTemplate = Handlebars.compile(navbarSource),
+                navbarPlaceholder = document.getElementById('navbar-placeholder');
+
+            var titleBackSource = document.getElementById('title-back-template').innerHTML,
+                titleBackTemplate = Handlebars.compile(titleBackSource),
+                titleBackPlaceholder = document.getElementById('title-back-placeholder');
+
+            var playlistSource = document.getElementById('playlist-template').innerHTML,
+                playlistTemplate = Handlebars.compile(playlistSource),
+                playlistPlaceholder = document.getElementById('playlist-placeholder');
+
+            var params = getHashParams();
+            console.log(params);
+
+            var access_token = params.access_token,
+                play_list_id = params.playlist_id,
+                error = params.error;
+
+            if (error) {
+                alert('There was an error during the authentication');
+            } else {
+                if (access_token) {
+                    // render oauth info
+                    /*
+                    oauthPlaceholder.innerHTML = oauthTemplate({
+                      access_token: access_token,
+                      refresh_token: refresh_token
+                    });*/
+                    $.ajax({
+                        url: 'https://api.spotify.com/v1/me',
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function (response) {
+                            console.log("HERE START 2");
+                            console.log(response);
+                            navbarPlaceholder.innerHTML = navbarTemplate(response);
+                            $('#login').hide();
+                            $('#loggedin').show();
+                        }
+                    });
+                    $.ajax({
+                        url: 'https://api.spotify.com/v1/playlists/' + play_list_id,
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function (response) {
+                            var tracks = response.tracks;
+                            console.log(response);
+                            titleBackPlaceholder.innerHTML = titleBackTemplate({
+                                playlist: response,
+                                origin: origin,
+                                access_token: access_token
+                            });
+                            playlistPlaceholder.innerHTML = playlistTemplate({
+                                playlist: response,
+                                tracks: tracks
+                            });
+                        }
+                    });
+                } else {
+                    // render initial screen
+                    $('#login').show();
+                    $('#loggedin').hide();
+                }
+            }
+        };
+        $(document).ready(buildPage());
+    </script>
+</body>
+
+</html>
