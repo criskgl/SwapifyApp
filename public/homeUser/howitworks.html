@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Megrim" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Swapify</title>
+</head>
+
+<body id="my-page">
+    <div id="navbar-placeholder"></div>
+
+    <div class="jumbotron jumbotron-fluid ">
+        <div class="container ">
+            <h1 class="display-4 ">Swapping?</h1>
+            <p class="lead ">Swapify will freshen your old playlists and eliminate that feeling of dullness from those you consistently love
+                listening to!.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 style="font-family: Roboto">1. Scan each track's artist/s from a playlist</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h5 style="font-family: Roboto">2. Replace the track with another one based on scanned artist/s</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h5 style="font-family: Roboto">3. Put it in your Spotify library, so you can listen to it whenever you want 😉</h5>
+            </div>
+        </div>
+    </div>
+
+    <img src="img/demo1.png" class="img-fluid" alt="Responsive image" style="margin-top: 20px;margin-bottom: 50px;">
+
+
+    <footer class="container-fluid text-center ">
+        <p id="footer-text " style="font-family: Megrim; letter-spacing: 2px; font-size: 11px; ">Made with ♥️ by
+            <a href="www.linkedin.com/in/cristian-kublai-gomez " target="blank ">Cristian K. Gómez</a>
+        </p>
+    </footer>
+    <!-- Optional JavaScript -->
+    <script src="https://kit.fontawesome.com/fc10dec7d5.js "></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js "></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 "
+        crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM "
+        crossorigin="anonymous "></script>
+    <!-- TITLE BAR (WITH BACK BUTTON) Template -->
+    <script id="navbar-template" type="text/x-handlebars-template">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a href="{{origin}}/homeUser/index.html?access_token={{access_token}}" class="navbar-brand" href="#" style="font-family: Megrim;">
+                    <img src="img/logoSmall.png" width="30" height="30" class="d-inline-block align-top" alt=""> Swapify
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ">
+                        <li class="nav-item ">
+                            <a class="nav-link " href="{{origin}}/homeUser/index.html?access_token={{access_token}}">Home</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link " onclick=openHowItWorks()>How it works</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link " href="# ">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+                </nav>
+    </script>
+    <script>
+        function openHowItWorks() {
+            window.open('howitworks.html?access_token=' + token, '_self');
+        }
+    </script>
+
+    <script>
+        /* 1.Obtains parameters from url*/
+        /* 2.Feeds Handlebars with info from ajax calls*/
+        function buildPage() {
+            var origin = window.location.origin;
+            console.log(origin);
+            console.log(window.location.href);
+            /**
+              * Obtains parameters from the hash of the URL
+              * @return Object
+              */
+            function getHashParams() {
+                var hashParams = {};
+                var e, r = /([^&;=]+)=?([^&;]*)/g,
+                    q = window.location.href.substring(47);
+                while (e = r.exec(q)) {
+                    hashParams[e[1]] = decodeURIComponent(e[2]);
+                }
+                return hashParams;
+            }
+
+            /*Compiling handlebars and associating them with divs*/
+
+            var navbarSource = document.getElementById('navbar-template').innerHTML,
+                navbarTemplate = Handlebars.compile(navbarSource),
+                navbarPlaceholder = document.getElementById('navbar-placeholder');
+
+            var params = getHashParams();
+            var access_token = params.access_token;
+            console.log(access_token);
+            console.log("accedjf")
+            console.log(access_token);
+
+            var access_token = params.access_token,
+                play_list_id = params.playlist_id,
+                error = params.error;
+
+            if (error) {
+                alert('There was an error during the authentication');
+            } else {
+                if (access_token) {
+                    // render navbar 
+                    navbarPlaceholder.innerHTML = navbarTemplate({
+                        access_token: access_token
+                    });
+
+                }
+            }
+        };
+        $(document).ready(buildPage());
+    </script>
+</body>
