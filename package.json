@@ -11,6 +11,7 @@
     "macosnotif": "^0.1.0",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
+    "sweetalert": "^2.1.2",
     "toastr": "^2.1.4"
   },
   "devDependencies": {},

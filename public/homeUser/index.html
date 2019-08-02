@@ -13,12 +13,44 @@
     crossorigin="anonymous">
 
   <title>Swapify</title>
+  <style>
+    .loader {
+      position: fixed;
+      z-index: 99;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader img {
+      width: 150px;
+    }
+
+    .loader.hidden {
+      animation: fadeOut 0.5s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeOut {
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  </style>
 </head>
 
 <body style="font-family: 'Roboto', sans-serif;">
+  <div class="loader">
+    <img src="img/loading-page-gif.gif" alt="Loading...">
+  </div>
   <div id="navbar-placeholder"></div>
   <div class="container">
-    <div class="row mt-3">
+    <div class="row mt-3 mb-2">
       <div class="col-12">
         <h4 class="songitem">My Playlists</h4>
       </div>
@@ -66,13 +98,16 @@
   <script id="playlist-template" type="text/x-handlebars-template">
     <div class="container">
       {{#each items}}
-      <div class="row songitem" style="padding-bottom:8px; margin-bottom: 8px; border-bottom: 1px solid #ddd;" onclick="getdetails('{{this.id}}')">
+      <div class="row songitem" id="playlist-{{this.id}}" style="padding-bottom:8px; padding-top: 5px; border-bottom: 1px solid #ddd;" onclick="getdetails('{{this.id}}')">
             <div class="col-4">
                 <img class="rounded" style="width: 100%;"src={{this.images.0.url}}>
             </div>
             <div class="col-8">
-              <h6>{{this.name}}</h6>
-              <p class="text-small" style="color: #bbb">{{this.tracks.total}} songs</p>
+              <h6 style="overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;">{{this.name}}</h6>
+              <p class="text-small" style="color: #bbb">{{this.tracks.total}}songs</p>
+              <a onclick="ConfirmDelete('{{this.id}}', event)"><i class="fas fa-trash" style="color: red; font-size: 16px; float: right; "></i></a>
             </div>
       </div>
       {{/each}}
@@ -99,7 +134,7 @@
       function getHashParams() {
         var hashParams = {};
         var e, r = /([^&;=]+)=?([^&;]*)/g,
-          q = window.location.href.substring(53);
+          q = window.location.href.substring(42);
         while (e = r.exec(q)) {
           hashParams[e[1]] = decodeURIComponent(e[2]);
         }
@@ -179,6 +214,70 @@
       window.open('playListDetails.html?access_token=' + token + "&playlist_id=" + playlist_id, '_self');
     }
   </script>
+  <script language="javascript" type="text/javascript">
+    function ConfirmDelete(playlist_id, event) {
+      document.getElementById('playlist-' + playlist_id).style.color = 'white';
+      document.getElementById('playlist-' + playlist_id).style.backgroundColor = 'rgb(250, 142, 142)';
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this playlist, not even in Spotify",
+        icon: "warning",
+        buttons: ["Cancel", "Delete"],
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            removePlaylist(playlist_id);
+
+            swal("Poof! Your playlist has been deleted!", {
+              icon: "success",
+            }).then((okayPressed) => {
+              window.setTimeout(function () {
+                document.getElementById('playlist-' + playlist_id).style.visibility = 'hidden';
+                document.getElementById('playlist-' + playlist_id).style.display = 'none';
+              }, 400);
+            });
+          } else {
+            document.getElementById('playlist-' + playlist_id).style.color = 'black';
+            document.getElementById('playlist-' + playlist_id).style.backgroundColor = 'white';
+            swal("Your playlist is safe!");
+          }
+        });
+      event.stopPropagation();
+    }
+  </script>
+  <script language="javascript" type="text/javascript">
+    function removePlaylist(playlist_id) {
+      var hashParams = {};
+      var e, r = /([^&;=]+)=?([^&;]*)/g,
+        q = window.location.href.substring(42);
+      while (e = r.exec(q)) {
+        r
+        hashParams[e[1]] = decodeURIComponent(e[2]);
+      }
+      var access_token = hashParams.access_token;
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.spotify.com/v1/playlists/" + playlist_id + "/followers",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": "Bearer " + access_token,
+          "Accept": "*/*"
+        }
+      }
+      $.ajax(settings).done(function (response) {
+
+      });
+    }
+  </script>
+  <script type="text/javascript">
+    window.addEventListener("load", function () {
+      const loader = document.querySelector(".loader");
+      loader.className += " hidden";
+    });
+  </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
 </html>
