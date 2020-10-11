@@ -15,9 +15,9 @@ var client_secret = "32ab56c55e5640b0b3a4855a0959f251"; // Your secret
 /*IMPORTANT
  * To deploy in heroku set kerokuDeploy to true
  * for deploying localy set herokuDeploy to false
- * delaration of redirect uri
+ * declaration of redirect uri
  */
-var herokuDeploy = false;
+var herokuDeploy = true;
 var redirect_uri;
 if (herokuDeploy) {
   redirect_uri = 'https://swapify321.herokuapp.com/home';
