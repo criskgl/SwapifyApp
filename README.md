@@ -17,3 +17,8 @@ This repository holds:
 
 * An index url which is loaded as a landing page with a video background
 * A home page that is loaded once the user logs in to Spotify.
+
+### Note
+
+server.js deploy heroku = true
+homeUser/index.html search for '[]'
